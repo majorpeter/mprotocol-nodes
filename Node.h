@@ -8,11 +8,18 @@ class Node {
     const char *name;
     Node* nextSibling;
     Node* firstChild;
-    const Property_t* properties;
+protected:
+    const Property_t** properties;
     uint16_t propertiesCount;
 public:
+    static Property_t prop_setName;
+
     Node(const char *name);
     virtual ~Node();
+
+    const char* getName() const {
+        return name;
+    }
 
     void addChild(Node* child);
 
@@ -21,9 +28,16 @@ public:
     }
 
     Node* getChildByName(const char* name);
-    /* TODO kell ez? Node* getNextSibling() {
+    const Property_t* getPropertyByName(const char* name) const;
+    const Property_t** getProperties() const {
+        return properties;
+    }
+    uint16_t getPropertiesCount() const {
+        return propertiesCount;
+    }
+    Node* getNextSibling() {
         return nextSibling;
-    }*/
+    }
 };
 
 #endif /* NODE_H_ */

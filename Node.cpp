@@ -1,6 +1,7 @@
 #include "Node.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 Node::Node(const char* name): name(name) {
     firstChild = nextSibling = NULL;
@@ -30,6 +31,15 @@ Node* Node::getChildByName(const char* name) {
                 return n;
             }
             n = n->nextSibling;
+        }
+    }
+    return NULL;
+}
+
+const Property_t* Node::getPropertyByName(const char* name) const {
+    for (int i = 0; i < propertiesCount; i++) {
+        if (strcmp(properties[i]->name, name) == 0) {
+            return properties[i];
         }
     }
     return NULL;
