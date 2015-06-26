@@ -47,20 +47,20 @@ typedef struct {
 
 // Property creation macros!
 #define MK_PROP_RW(_CLASS_, _NAME_, _TYPE_, _DESC_) \
-    const Property_t LedNode::prop_ ## _NAME_ = {   \
+    const Property_t _CLASS_::prop_ ## _NAME_ = {   \
         #_NAME_, _DESC_,    \
         _TYPE_, PropAccessLevel_ReadWrite, \
         (void*)&_CLASS_::get ## _NAME_, \
         (void*)&_CLASS_::set ## _NAME_, \
-        ((size_t)(Node*)(LedNode*) 1) - 1 \
+        ((size_t)(Node*)(_CLASS_*) 1) - 1 \
     }
 #define MK_PROP_RO(_CLASS_, _NAME_, _TYPE_, _DESC_) \
-    const Property_t LedNode::prop_ ## _NAME_ = {   \
+    const Property_t _CLASS_::prop_ ## _NAME_ = {   \
         #_NAME_, _DESC_,    \
         _TYPE_, PropAccessLevel_ReadOnly, \
         (void*)&_CLASS_::get ## _NAME_, \
         NULL, \
-        ((size_t)(Node*)(LedNode*) 1) - 1 \
+        ((size_t)(Node*)(_CLASS_*) 1) - 1 \
     }
 #define MK_PROP_METHOD(_CLASS_, _NAME_, _DESC_) \
     const Property_t LedNode::prop_ ## _NAME_ = {   \
