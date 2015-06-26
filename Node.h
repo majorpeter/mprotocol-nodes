@@ -10,7 +10,7 @@ class Node {
     Node* firstChild;
 protected:
     const Property_t** properties;
-    uint16_t propertiesCount;
+    unsigned propertiesCount;
 public:
     static Property_t prop_setName;
 
@@ -32,12 +32,29 @@ public:
     const Property_t** getProperties() const {
         return properties;
     }
-    uint16_t getPropertiesCount() const {
+    unsigned getPropertiesCount() const {
         return propertiesCount;
     }
     Node* getNextSibling() {
         return nextSibling;
     }
 };
+
+/**
+ * sets node's properties pointer & properties count
+ * @note call from constructor with a const array of the node's static properties
+ * @note the array has to be a static var in the current module for size calculation
+ */
+#define NODE_SET_PROPS(_PROPERTIES_ARRAY_) { \
+        this->properties = _PROPERTIES_ARRAY_; \
+        this->propertiesCount = sizeof(_PROPERTIES_ARRAY_)/sizeof(_PROPERTIES_ARRAY_[0]); \
+    }
+/**
+ * sets node's properties pointer & properties count
+ * @note call from constructor with a const array of the node's static properties
+ */
+#define NODE_SET_PROPS_WITH_COUNT(_PROPERTIES_ARRAY_, _PROPERTIES_COUNT_) \
+        this->properties = _PROPERTIES_ARRAY_; \
+        this->propertiesCount = _PROPERTIES_COUNT_
 
 #endif /* NODE_H_ */

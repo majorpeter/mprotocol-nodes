@@ -37,7 +37,7 @@ Node* Node::getChildByName(const char* name) {
 }
 
 const Property_t* Node::getPropertyByName(const char* name) const {
-    for (int i = 0; i < propertiesCount; i++) {
+    for (unsigned i = 0; i < propertiesCount; i++) {
         if (strcmp(properties[i]->name, name) == 0) {
             return properties[i];
         }
