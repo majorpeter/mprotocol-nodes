@@ -1,7 +1,7 @@
 #ifndef NODE_H_
 #define NODE_H_
 
-#include "Properties.h"
+#include "Property.h"
 #include <stdint.h>
 
 class Node {

@@ -45,6 +45,8 @@ typedef struct {
     size_t nodeOffset;
 } Property_t;
 
+const char* Property_TypeToStr(PropertyType_t type);
+
 // Property creation macros!
 #define MK_PROP_RW(_CLASS_, _NAME_, _TYPE_, _DESC_) \
     const Property_t _CLASS_::prop_ ## _NAME_ = {   \
