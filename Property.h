@@ -29,9 +29,9 @@ typedef struct {
     PropAccessLevel_t accessLevel;
     union {
         void *addressGetter;
-        bool (*boolGet)(Node*);
-        int32_t (*intGet)(Node*);
-        uint32_t (*uintGet)(Node*);
+        void (*boolGet)(Node*, bool* dest);
+        void (*intGet)(Node*, int32_t* dest);
+        void (*uintGet)(Node*, uint32_t* dest);
         void (*stringGet)(Node*, char* dest);
     };
     union {
@@ -48,6 +48,20 @@ typedef struct {
 const char* Property_TypeToStr(PropertyType_t type);
 
 // Property creation macros!
+#define DECLARE_PROP_RW(_NAME_, _CTYPE_) \
+    public: \
+        static const Property_t prop_ ## _NAME_; \
+        void get ## _NAME_(_CTYPE_*); \
+        void set ## _NAME_(const _CTYPE_)
+#define DECLARE_PROP_RO(_NAME_, _CTYPE_) \
+    public: \
+        static const Property_t prop_ ## _NAME_; \
+        void get ## _NAME_(_CTYPE_*)
+#define DECLARE_PROP_METHOD(_NAME_) \
+    public: \
+        static const Property_t prop_ ## _NAME_; \
+        void invoke ## _NAME_(const char* params)
+
 #define MK_PROP_RW(_CLASS_, _NAME_, _TYPE_, _DESC_) \
     const Property_t _CLASS_::prop_ ## _NAME_ = {   \
         #_NAME_, _DESC_,    \
@@ -65,16 +79,26 @@ const char* Property_TypeToStr(PropertyType_t type);
         ((size_t)(Node*)(_CLASS_*) 1) - 1 \
     }
 #define MK_PROP_METHOD(_CLASS_, _NAME_, _DESC_) \
-    const Property_t LedNode::prop_ ## _NAME_ = {   \
+    const Property_t _CLASS_::prop_ ## _NAME_ = {   \
         #_NAME_, _DESC_,    \
         PropertyType_Method, PropAccessLevel_Invokable, \
         NULL, \
         (void*)&_CLASS_::invoke ## _NAME_, \
-        ((size_t)(Node*)(LedNode*)1) - 1 \
+        ((size_t)(Node*)(_CLASS_*)1) - 1 \
     }
 
 
 // shortcuts
+#define DECLARE_PROP_UINT32_RW(_NAME_) DECLARE_PROP_RW(_NAME_, uint32_t)
+#define DECLARE_PROP_INT32_RW(_NAME_) DECLARE_PROP_RW(_NAME_, int32_t)
+#define DECLARE_PROP_BOOL_RW(_NAME_) DECLARE_PROP_RW(_NAME_, bool)
+//TODO #define DECLARE_PROP_STRING_RW(_NAME_) DECLARE_PROP_RW(_NAME_, char*)
+
+#define DECLARE_PROP_UINT32_RO(_NAME_) DECLARE_PROP_RO(_NAME_, uint32_t)
+#define DECLARE_PROP_INT32_RO(_NAME_) DECLARE_PROP_RO(_NAME_, int32_t)
+#define DECLARE_PROP_BOOL_RO(_NAME_) DECLARE_PROP_RO(_NAME_, bool)
+//TODO #define DECLARE_PROP_STRING_RO(_NAME_) DECLARE_PROP_RO(_NAME_, char*)
+
 #define MK_PROP_UINT32_RW(_CLASS_, _NAME_, _DESC_) MK_PROP_RW(_CLASS_, _NAME_, PropertyType_Uint32, _DESC_)
 #define MK_PROP_INT32_RW(_CLASS_, _NAME_, _DESC_)  MK_PROP_RW(_CLASS_, _NAME_, PropertyType_Int32, _DESC_)
 #define MK_PROP_BOOL_RW(_CLASS_, _NAME_, _DESC_)   MK_PROP_RW(_CLASS_, _NAME_, PropertyType_Bool, _DESC_)
