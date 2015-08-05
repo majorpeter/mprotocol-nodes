@@ -7,6 +7,17 @@
 class Node;
 
 typedef enum {
+    ProtocolResult_Ok,
+    ProtocolResult_UnknownFunc,
+    ProtocolResult_NodeNotFound,
+    ProtocolResult_PropertyNotFound,
+    ProtocolResult_SyntaxError,
+    ProtocolResult_InvalidFunc,
+    ProtocolResult_InvalidValue,
+    ProtocolResult_InternalError,
+} ProtocolResult_t;
+
+typedef enum {
     PropertyType_Uint32,
     PropertyType_Int32,
     PropertyType_Bool,
@@ -29,18 +40,18 @@ typedef struct {
     PropAccessLevel_t accessLevel;
     union {
         void *addressGetter;
-        void (*boolGet)(Node*, bool* dest);
-        void (*intGet)(Node*, int32_t* dest);
-        void (*uintGet)(Node*, uint32_t* dest);
-        void (*stringGet)(Node*, char* dest);
+        ProtocolResult_t (*boolGet)(Node*, bool* dest);
+        ProtocolResult_t (*intGet)(Node*, int32_t* dest);
+        ProtocolResult_t (*uintGet)(Node*, uint32_t* dest);
+        ProtocolResult_t (*stringGet)(Node*, char* dest);
     };
     union {
         void *addressSetter;
-        void (*boolSet)(Node*, bool);
-        void (*intSet)(Node*, int32_t);
-        void (*uintSet)(Node*, uint32_t);
-        void (*stringSet)(Node*, const char* from);
-        void (*methodInvoke)(Node*, const char* params);
+        ProtocolResult_t (*boolSet)(Node*, bool);
+        ProtocolResult_t (*intSet)(Node*, int32_t);
+        ProtocolResult_t (*uintSet)(Node*, uint32_t);
+        ProtocolResult_t (*stringSet)(Node*, const char* from);
+        ProtocolResult_t (*methodInvoke)(Node*, const char* params);
     };
     size_t nodeOffset;
 } Property_t;
@@ -51,16 +62,16 @@ const char* Property_TypeToStr(PropertyType_t type);
 #define DECLARE_PROP_RW(_NAME_, _CTYPE_) \
     public: \
         static const Property_t prop_ ## _NAME_; \
-        void get ## _NAME_(_CTYPE_*); \
-        void set ## _NAME_(const _CTYPE_)
+        ProtocolResult_t get ## _NAME_(_CTYPE_*); \
+        ProtocolResult_t set ## _NAME_(const _CTYPE_)
 #define DECLARE_PROP_RO(_NAME_, _CTYPE_) \
     public: \
         static const Property_t prop_ ## _NAME_; \
-        void get ## _NAME_(_CTYPE_*)
+        ProtocolResult_t get ## _NAME_(_CTYPE_*)
 #define DECLARE_PROP_METHOD(_NAME_) \
     public: \
         static const Property_t prop_ ## _NAME_; \
-        void invoke ## _NAME_(const char* params)
+        ProtocolResult_t invoke ## _NAME_(const char* params)
 
 #define MK_PROP_RW(_CLASS_, _NAME_, _TYPE_, _DESC_) \
     const Property_t _CLASS_::prop_ ## _NAME_ = {   \

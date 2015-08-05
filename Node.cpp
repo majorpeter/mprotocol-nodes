@@ -7,6 +7,7 @@ Node::Node(const char* name): name(name) {
     firstChild = nextSibling = NULL;
     properties = NULL;
     propertiesCount = 0;
+    parent = NULL;
 }
 
 Node::~Node() {}
@@ -21,6 +22,7 @@ void Node::addChild(Node* child) {
         }
         np->nextSibling = child;
     }
+    child->parent = this;
 }
 
 Node* Node::getChildByName(const char* name) {
@@ -43,4 +45,19 @@ const Property_t* Node::getPropertyByName(const char* name) const {
         }
     }
     return NULL;
+}
+
+void Node::getPathRecursively(char *dest) {
+    if (parent != NULL) {
+        parent->getPathRecursively(dest);
+    }
+    // find end of string
+    while (*dest != '\0') {
+        dest++;
+    }
+    dest[0] = '/';
+
+    if (this->name != NULL) {
+        strcpy(dest + 1, this->name);
+    }
 }

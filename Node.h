@@ -8,6 +8,7 @@ class Node {
     const char *name;
     Node* nextSibling;
     Node* firstChild;
+    Node* parent;
 protected:
     const Property_t** properties;
     unsigned propertiesCount;
@@ -38,6 +39,7 @@ public:
     Node* getNextSibling() {
         return nextSibling;
     }
+    void getPathRecursively(char *dest);
 };
 
 /**
