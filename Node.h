@@ -13,8 +13,6 @@ protected:
     const Property_t** properties;
     unsigned propertiesCount;
 public:
-    static Property_t prop_setName;
-
     Node(const char *name);
     virtual ~Node();
 

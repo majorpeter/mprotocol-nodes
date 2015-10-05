@@ -109,13 +109,20 @@ const char* Property_TypeToStr(PropertyType_t type);
 #define DECLARE_PROP_INT32_RW(_NAME_) DECLARE_PROP_RW(_NAME_, int32_t)
 #define DECLARE_PROP_UINT32_RW(_NAME_) DECLARE_PROP_RW(_NAME_, uint32_t)
 #define DECLARE_PROP_FLOAT32_RW(_NAME_) DECLARE_PROP_RW(_NAME_, float32_t)
-//TODO #define DECLARE_PROP_STRING_RW(_NAME_) DECLARE_PROP_RW(_NAME_, char*)
+#define DECLARE_PROP_STRING_RW(_NAME_)  \
+    public: \
+        static const Property_t prop_ ## _NAME_; \
+        ProtocolResult_t get ## _NAME_(char*); \
+        ProtocolResult_t set ## _NAME_(const char*)
 
 #define DECLARE_PROP_BOOL_RO(_NAME_) DECLARE_PROP_RO(_NAME_, bool)
 #define DECLARE_PROP_INT32_RO(_NAME_) DECLARE_PROP_RO(_NAME_, int32_t)
 #define DECLARE_PROP_UINT32_RO(_NAME_) DECLARE_PROP_RO(_NAME_, uint32_t)
 #define DECLARE_PROP_FLOAT32_RO(_NAME_) DECLARE_PROP_RO(_NAME_, float32_t)
-//TODO #define DECLARE_PROP_STRING_RO(_NAME_) DECLARE_PROP_RO(_NAME_, char*)
+#define DECLARE_PROP_STRING_RO(_NAME_) \
+    public: \
+        static const Property_t prop_ ## _NAME_; \
+        ProtocolResult_t get ## _NAME_(char*)
 
 #define MK_PROP_BOOL_RW(_CLASS_, _NAME_, _DESC_)    MK_PROP_RW(_CLASS_, _NAME_, PropertyType_Bool, _DESC_)
 #define MK_PROP_INT32_RW(_CLASS_, _NAME_, _DESC_)   MK_PROP_RW(_CLASS_, _NAME_, PropertyType_Int32, _DESC_)
