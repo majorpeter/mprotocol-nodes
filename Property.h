@@ -136,4 +136,7 @@ const char* Property_TypeToStr(PropertyType_t type);
 #define MK_PROP_FLOAT32_RO(_CLASS_, _NAME_, _DESC_) MK_PROP_RO(_CLASS_, _NAME_, PropertyType_Float32, _DESC_)
 #define MK_PROP_STRING_RO(_CLASS_, _NAME_, _DESC_)  MK_PROP_RO(_CLASS_, _NAME_, PropertyType_String, _DESC_)
 
+#define PROP_ARRAY(_NAME_) static const Property_t* _NAME_[]
+#define PROP_ADDRESS(_CLASS_, _NAME_) &_CLASS_::prop_ ## _NAME_
+
 #endif /* PROPERTIES_H_ */
