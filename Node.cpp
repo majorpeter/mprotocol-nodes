@@ -8,6 +8,7 @@ Node::Node(const char* name): name(name) {
     properties = NULL;
     propertiesCount = 0;
     parent = NULL;
+    propertyChangeMask = 0;
 }
 
 Node::~Node() {}
@@ -60,4 +61,26 @@ void Node::getPathRecursively(char *dest) {
     if (this->name != NULL) {
         strcpy(dest + 1, this->name);
     }
+}
+
+/**
+ * call this with one of the Node's properties to mark the property as changed
+ * @note if the node is subscribed to, this will trigger an async change message
+ */
+void Node::invalidateProperty(const Property_t *prop) {
+	for (uint8_t i = 0; i < propertiesCount; i++) {
+		if (properties[i] == prop) {
+			propertyChangeMask |= 1 << i;
+			break;
+		}
+	}
+}
+
+/**
+ * this function returns the change mask and clears it, so that each change is reported only once
+ */
+uint32_t Node::getAndClearPropChangeMask() {
+	uint32_t mask = this->propertyChangeMask;
+	this->propertyChangeMask = 0;
+	return mask;
 }

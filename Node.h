@@ -9,9 +9,10 @@ class Node {
     Node* nextSibling;
     Node* firstChild;
     Node* parent;
+    uint32_t propertyChangeMask;
 protected:
     const Property_t** properties;
-    unsigned propertiesCount;
+    uint8_t propertiesCount;
 public:
     Node(const char *name);
     virtual ~Node();
@@ -38,6 +39,9 @@ public:
         return nextSibling;
     }
     void getPathRecursively(char *dest);
+
+    void invalidateProperty(const Property_t *prop);
+    uint32_t getAndClearPropChangeMask();
 };
 
 /**
