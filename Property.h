@@ -44,12 +44,12 @@ typedef struct {
     PropAccessLevel_t accessLevel;
     union {
         void *addressGetter;
-        ProtocolResult_t (*boolGet)(Node*, bool*);
-        ProtocolResult_t (*intGet)(Node*, int32_t*);
-        ProtocolResult_t (*uintGet)(Node*, uint32_t*);
-        ProtocolResult_t (*floatGet)(Node*, float32_t*);
-        ProtocolResult_t (*stringGet)(Node*, char*);
-        ProtocolResult_t (*binaryGet)(Node*, void**, uint16_t*);
+        ProtocolResult_t (*boolGet)(const Node*, bool*);
+        ProtocolResult_t (*intGet)(const Node*, int32_t*);
+        ProtocolResult_t (*uintGet)(const Node*, uint32_t*);
+        ProtocolResult_t (*floatGet)(const Node*, float32_t*);
+        ProtocolResult_t (*stringGet)(const Node*, char*);
+        ProtocolResult_t (*binaryGet)(const Node*, void**, uint16_t*);
     };
     union {
         void *addressSetter;
