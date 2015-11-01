@@ -1,4 +1,5 @@
 #include "Node.h"
+#include <Protocol/AbstractSerialInterface.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -61,6 +62,16 @@ void Node::getPathRecursively(char *dest) {
     if (this->name != NULL) {
         strcpy(dest + 1, this->name);
     }
+}
+
+void Node::printPathRecursively(AbstractSerialInterface *interface) {
+	if (parent != NULL) {
+		parent->printPathRecursively(interface);
+	}
+
+	if (this->name != NULL) {
+		*interface << this->name;
+	}
 }
 
 /**
