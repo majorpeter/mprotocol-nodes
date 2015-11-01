@@ -10,6 +10,7 @@ class Node;
 
 typedef enum {
     ProtocolResult_Ok,
+    ProtocolResult_Failed,
     ProtocolResult_UnknownFunc,
     ProtocolResult_NodeNotFound,
     ProtocolResult_PropertyNotFound,
