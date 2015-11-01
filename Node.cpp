@@ -49,7 +49,7 @@ const Property_t* Node::getPropertyByName(const char* name) const {
     return NULL;
 }
 
-void Node::getPathRecursively(char *dest) {
+void Node::getPathRecursively(char *dest) const {
     if (parent != NULL) {
         parent->getPathRecursively(dest);
     }
@@ -64,7 +64,7 @@ void Node::getPathRecursively(char *dest) {
     }
 }
 
-void Node::printPathRecursively(AbstractSerialInterface *interface) {
+void Node::printPathRecursively(AbstractSerialInterface *interface) const {
 	if (parent != NULL) {
 		parent->printPathRecursively(interface);
 	}

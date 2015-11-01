@@ -37,11 +37,11 @@ public:
     unsigned getPropertiesCount() const {
         return propertiesCount;
     }
-    Node* getNextSibling() {
+    Node* getNextSibling() const {
         return nextSibling;
     }
-    void getPathRecursively(char *dest);
-    void printPathRecursively(AbstractSerialInterface *interface);
+    void getPathRecursively(char *dest) const;
+    void printPathRecursively(AbstractSerialInterface *interface) const;
 
     void invalidateProperty(const Property_t *prop);
     uint32_t getAndClearPropChangeMask();
