@@ -8,6 +8,7 @@ class AbstractSerialInterface;
 
 class Node {
     const char *name;
+    const char *description;
     Node* nextSibling;
     Node* firstChild;
     Node* parent;
@@ -16,11 +17,14 @@ protected:
     const Property_t** properties;
     uint8_t propertiesCount;
 public:
-    Node(const char *name);
+    Node(const char *name, const char* description = "");
     virtual ~Node();
 
     const char* getName() const {
         return name;
+    }
+    const char* getDescription() const {
+    	return description;
     }
 
     void addChild(Node* child);

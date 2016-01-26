@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 
-Node::Node(const char* name): name(name) {
+Node::Node(const char* name, const char* description): name(name), description(description) {
     firstChild = nextSibling = NULL;
     properties = NULL;
     propertiesCount = 0;
