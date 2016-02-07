@@ -45,22 +45,22 @@ typedef struct {
     PropAccessLevel_t accessLevel;
     union {
         void *addressGetter;
-        ProtocolResult_t (*boolGet)(const Node*, bool*);
-        ProtocolResult_t (*intGet)(const Node*, int32_t*);
-        ProtocolResult_t (*uintGet)(const Node*, uint32_t*);
-        ProtocolResult_t (*floatGet)(const Node*, float32_t*);
-        ProtocolResult_t (*stringGet)(const Node*, char*);
-        ProtocolResult_t (*binaryGet)(const Node*, void**, uint16_t*);
+        ProtocolResult_t (Node::*boolGet)(bool*) const;
+        ProtocolResult_t (Node::*intGet)(int32_t*) const;
+        ProtocolResult_t (Node::*uintGet)(uint32_t*) const;
+        ProtocolResult_t (Node::*floatGet)(float*) const;
+        ProtocolResult_t (Node::*stringGet)(char*) const;
+        ProtocolResult_t (Node::*binaryGet)(void**, uint16_t*) const;
     };
     union {
         void *addressSetter;
-        ProtocolResult_t (*boolSet)(Node*, bool);
-        ProtocolResult_t (*intSet)(Node*, int32_t);
-        ProtocolResult_t (*uintSet)(Node*, uint32_t);
-        ProtocolResult_t (*floatSet)(Node*, float32_t);
-        ProtocolResult_t (*stringSet)(Node*, const char*);
-        ProtocolResult_t (*binarySet)(Node*, const void*, uint16_t);
-        ProtocolResult_t (*methodInvoke)(Node*, const char*);
+        ProtocolResult_t (Node::*boolSet)(bool);
+        ProtocolResult_t (Node::*intSet)(int32_t);
+        ProtocolResult_t (Node::*uintSet)(uint32_t);
+        ProtocolResult_t (Node::*floatSet)(float32_t);
+        ProtocolResult_t (Node::*stringSet)(const char*);
+        ProtocolResult_t (Node::*binarySet)(const void*, uint16_t);
+        ProtocolResult_t (Node::*methodInvoke)(const char*);
     };
     size_t nodeOffset;
 } Property_t;
@@ -90,6 +90,7 @@ const char* Property_TypeToStr(PropertyType_t type);
         (void*)&_CLASS_::set ## _NAME_, \
         ((size_t)(Node*)(_CLASS_*) 1) - 1 \
     }
+////#define POINTER_MAGIC(_CLASS_) \ //((int)static_cast<Node*>(reinterpret_cast<_CLASS_*>(1)) - 1)
 #define MK_PROP_RO(_CLASS_, _NAME_, _TYPE_, _DESC_) \
     const Property_t _CLASS_::prop_ ## _NAME_ = {   \
         #_NAME_, _DESC_,    \
