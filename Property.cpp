@@ -1,7 +1,4 @@
 #include "Property.h"
-#include <Log/Log.h>
-
-LOG_TAG(PROPERTY);
 
 const char* Property_TypeToStr(PropertyType_t type) {
     switch (type) {
@@ -13,6 +10,6 @@ const char* Property_TypeToStr(PropertyType_t type) {
     case PropertyType_Binary: return "BINARY";
     case PropertyType_Method: return "METHOD";
     }
-    Log::Error(PROPERTY, "propertyType", type);
+    //TODO Log::Error(PROPERTY, "propertyType", type);
     return "INVALID";
 }

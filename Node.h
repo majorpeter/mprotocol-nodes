@@ -4,8 +4,6 @@
 #include "Property.h"
 #include <stdint.h>
 
-class AbstractSerialInterface;
-
 class Node {
     const char *name;
     const char *description;
@@ -45,7 +43,6 @@ public:
         return nextSibling;
     }
     void getPathRecursively(char *dest) const;
-    void printPathRecursively(AbstractSerialInterface *interface) const;
 
     void invalidateProperty(const Property_t *prop);
     uint32_t getAndClearPropChangeMask();
