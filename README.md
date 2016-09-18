@@ -1,6 +1,6 @@
 # mprotocol-nodes
 
-The `MProtocol Node library` contains a very simple `Node` object that could be accessed via any protocol. The Node itself does not depend on any other library (or platform).
+The `MProtocol Node library` contains a very simple `Node` object that could be accessed via *any* protocol. The Node itself does not depend on any other library (or platform).
 
 ## RootNode
 
@@ -21,3 +21,55 @@ Each Node has a set of properties that can be accessed using a higher layer prot
 ## Manual
 
 Each Node and Property may have a *manual entry*, which is a short text about its purpose.
+
+## Usage
+
+The project's nodes are classes derived from the `Node` class. Each property has to be declared in the **class declaration**, e.g.:
+```cpp
+class LedNode: public Node {
+public:
+	enum LedType {
+		LedType_Green,
+		LedType_Orange,
+		LedType_Red,
+		LedType_Blue
+	};
+
+	LedNode(LedType type, PwmInterface* pwm);
+	virtual ~LedNode();
+
+	static void globalInit();
+	void init(uint32_t alternateFunction);
+
+	DECLARE_PROP_BOOL_RW(Enabled);
+	DECLARE_PROP_UINT32_RW(Pwm);
+private:
+	GPIO_TypeDef* gpio_port;
+	uint16_t gpio_pin;
+	PwmInterface* pwm;
+};
+```
+
+The `DECLARE_PROP_xx_Ry` macros generate the descriptor object and the setter & getter method declaration for the property. `xx` stands for the property type, `y` can be `O` or `W` (as in *read-only* or *read/write*).
+
+The **source file** (*.cpp*) contains the definition for the descriptor. Use the `MK_PROP_xx_Ry` macros to fill the structure, e.g.:
+```cpp
+MK_PROP_BOOL_RW(LedNode, Enabled, "LED is On or Off.");
+```
+
+It also contains the property array that is assigned to the node's property array pointer:
+```cpp
+PROP_ARRAY(props) = {
+		PROP_ADDRESS(LedNode, Enabled),
+		PROP_ADDRESS(LedNode, Pwm)
+};
+
+LedNode::LedNode(LedType type, PwmInterface* pwm): Node(ledNames[type]) {
+	this->gpio_port = ledPorts[type];
+	this->gpio_pin = ledPins[type];
+	this->pwm = pwm;
+	
+	// assign properties array
+	NODE_SET_PROPS(props);
+}
+```
