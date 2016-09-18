@@ -42,6 +42,9 @@ public:
     Node* getNextSibling() const {
         return nextSibling;
     }
+    const Node* getParent() const {
+    	return parent;
+    }
     void getPathRecursively(char *dest) const;
 
     void invalidateProperty(const Property_t *prop);
