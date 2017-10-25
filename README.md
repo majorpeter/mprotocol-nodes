@@ -74,6 +74,6 @@ LedNode::LedNode(LedType type, PwmInterface* pwm): Node(ledNames[type]) {
 }
 ```
 
-The source of course also contains the method implementations that the node/protocol exports for remote access (RPC). The getters have a `const` qualifier and return via pointer, while setters' paramerters are take by value. Both setters and getters return the common `ProtocolResult_t` type to report errors to the protocol (or caller).
+The source of course also contains the method implementations that the node/protocol exports for remote access (RPC). The getters have a `const` qualifier and return via pointer, while setters' parameters are take by value. Both setters and getters return the common `ProtocolResult_t` type to report errors to the protocol (or caller).
 
 See also [the STM32 demo project](https://github.com/majorpeter/stm32-mprotocol-demo).
