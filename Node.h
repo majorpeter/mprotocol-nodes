@@ -22,7 +22,7 @@ public:
         return name;
     }
     const char* getDescription() const {
-    	return description;
+        return description;
     }
 
     void addChild(Node* child);
@@ -43,7 +43,7 @@ public:
         return nextSibling;
     }
     const Node* getParent() const {
-    	return parent;
+        return parent;
     }
     void getPathRecursively(char *dest) const;
 

@@ -123,7 +123,7 @@ const char* Property_TypeToStr(PropertyType_t type);
     public: \
         static const Property_t prop_ ## _NAME_; \
         ProtocolResult_t get ## _NAME_(void**, uint16_t *) const; \
-		ProtocolResult_t set ## _NAME_(const void*, uint16_t)
+        ProtocolResult_t set ## _NAME_(const void*, uint16_t)
 
 #define DECLARE_PROP_BOOL_RO(_NAME_) DECLARE_PROP_RO(_NAME_, bool)
 #define DECLARE_PROP_INT32_RO(_NAME_) DECLARE_PROP_RO(_NAME_, int32_t)

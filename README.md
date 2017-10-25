@@ -28,25 +28,25 @@ The project's nodes are classes derived from the `Node` class. Each property has
 ```cpp
 class LedNode: public Node {
 public:
-	enum LedType {
-		LedType_Green,
-		LedType_Orange,
-		LedType_Red,
-		LedType_Blue
-	};
+    enum LedType {
+        LedType_Green,
+        LedType_Orange,
+        LedType_Red,
+        LedType_Blue
+    };
 
-	LedNode(LedType type, PwmInterface* pwm);
-	virtual ~LedNode();
+    LedNode(LedType type, PwmInterface* pwm);
+    virtual ~LedNode();
 
-	static void globalInit();
-	void init(uint32_t alternateFunction);
+    static void globalInit();
+    void init(uint32_t alternateFunction);
 
-	DECLARE_PROP_BOOL_RW(Enabled);
-	DECLARE_PROP_UINT32_RW(Pwm);
+    DECLARE_PROP_BOOL_RW(Enabled);
+    DECLARE_PROP_UINT32_RW(Pwm);
 private:
-	GPIO_TypeDef* gpio_port;
-	uint16_t gpio_pin;
-	PwmInterface* pwm;
+    GPIO_TypeDef* gpio_port;
+    uint16_t gpio_pin;
+    PwmInterface* pwm;
 };
 ```
 
@@ -60,17 +60,17 @@ MK_PROP_BOOL_RW(LedNode, Enabled, "LED is On or Off.");
 It also contains the property array that is assigned to the node's property array pointer:
 ```cpp
 PROP_ARRAY(props) = {
-		PROP_ADDRESS(LedNode, Enabled),
-		PROP_ADDRESS(LedNode, Pwm)
+        PROP_ADDRESS(LedNode, Enabled),
+        PROP_ADDRESS(LedNode, Pwm)
 };
 
 LedNode::LedNode(LedType type, PwmInterface* pwm): Node(ledNames[type]) {
-	this->gpio_port = ledPorts[type];
-	this->gpio_pin = ledPins[type];
-	this->pwm = pwm;
-	
-	// assign properties array
-	NODE_SET_PROPS(props);
+    this->gpio_port = ledPorts[type];
+    this->gpio_pin = ledPins[type];
+    this->pwm = pwm;
+    
+    // assign properties array
+    NODE_SET_PROPS(props);
 }
 ```
 
