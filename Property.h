@@ -122,7 +122,7 @@ const char* Property_TypeToStr(PropertyType_t type);
 #define DECLARE_PROP_BINARY_RW(_NAME_) \
     public: \
         static const Property_t prop_ ## _NAME_; \
-        ProtocolResult_t get ## _NAME_(void**, uint16_t *) const; \
+        ProtocolResult_t get ## _NAME_(const void**, uint16_t *) const; \
         ProtocolResult_t set ## _NAME_(const void*, uint16_t)
 
 #define DECLARE_PROP_BOOL_RO(_NAME_) DECLARE_PROP_RO(_NAME_, bool)
@@ -136,7 +136,7 @@ const char* Property_TypeToStr(PropertyType_t type);
 #define DECLARE_PROP_BINARY_RO(_NAME_) \
     public: \
         static const Property_t prop_ ## _NAME_; \
-        ProtocolResult_t get ## _NAME_(void**, uint16_t *) const
+        ProtocolResult_t get ## _NAME_(const void**, uint16_t *) const
 
 #define MK_PROP_BOOL_RW(_CLASS_, _NAME_, _DESC_)    MK_PROP_RW(_CLASS_, _NAME_, PropertyType_Bool, _DESC_)
 #define MK_PROP_INT32_RW(_CLASS_, _NAME_, _DESC_)   MK_PROP_RW(_CLASS_, _NAME_, PropertyType_Int32, _DESC_)
