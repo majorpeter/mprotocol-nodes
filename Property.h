@@ -1,7 +1,7 @@
 #ifndef PROPERTIES_H_
 #define PROPERTIES_H_
 
-#include <stdint.h>
+#include "AbstractPacketInterface.h"
 #include <stddef.h>
 
 #define float32_t float
@@ -27,6 +27,7 @@ typedef enum {
     PropertyType_Float32,
     PropertyType_String,
     PropertyType_Binary,
+    PropertyType_BinarySegmented,
     PropertyType_Method
 } PropertyType_t;
 
@@ -44,22 +45,24 @@ typedef struct {
     PropertyType_t type;
     PropAccessLevel_t accessLevel;
     union {
-        void *addressGetter;
+        void* addressGetter;
         ProtocolResult_t (Node::*boolGet)(bool*) const;
         ProtocolResult_t (Node::*intGet)(int32_t*) const;
         ProtocolResult_t (Node::*uintGet)(uint32_t*) const;
         ProtocolResult_t (Node::*floatGet)(float*) const;
         ProtocolResult_t (Node::*stringGet)(char*) const;
         ProtocolResult_t (Node::*binaryGet)(void**, uint16_t*) const;
+        ProtocolResult_t (Node::*binarySegmentedGet)(AbstractPacketInterface*) const;
     };
     union {
-        void *addressSetter;
+        void* addressSetter;
         ProtocolResult_t (Node::*boolSet)(bool);
         ProtocolResult_t (Node::*intSet)(int32_t);
         ProtocolResult_t (Node::*uintSet)(uint32_t);
         ProtocolResult_t (Node::*floatSet)(float32_t);
         ProtocolResult_t (Node::*stringSet)(const char*);
         ProtocolResult_t (Node::*binarySet)(const void*, uint16_t);
+        AbstractPacketInterface* binarySegmentedSet;
         ProtocolResult_t (Node::*methodInvoke)(const char*);
     };
     size_t nodeOffset;
@@ -90,7 +93,6 @@ const char* Property_TypeToStr(PropertyType_t type);
         (void*)&_CLASS_::set ## _NAME_, \
         ((size_t)(Node*)(_CLASS_*) 1) - 1 \
     }
-////#define POINTER_MAGIC(_CLASS_) \ //((int)static_cast<Node*>(reinterpret_cast<_CLASS_*>(1)) - 1)
 #define MK_PROP_RO(_CLASS_, _NAME_, _TYPE_, _DESC_) \
     const Property_t _CLASS_::prop_ ## _NAME_ = {   \
         #_NAME_, _DESC_,    \
