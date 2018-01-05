@@ -1,7 +1,9 @@
 #ifndef PROPERTIES_H_
 #define PROPERTIES_H_
 
+#include "AbstractSerialInterface.h"
 #include "AbstractPacketInterface.h"
+
 #include <stddef.h>
 
 #define float32_t float
@@ -52,7 +54,7 @@ typedef struct {
         ProtocolResult_t (Node::*floatGet)(float*) const;
         ProtocolResult_t (Node::*stringGet)(char*) const;
         ProtocolResult_t (Node::*binaryGet)(void**, uint16_t*) const;
-        ProtocolResult_t (Node::*binarySegmentedGet)(AbstractPacketInterface*) const;
+        ProtocolResult_t (Node::*binarySegmentedGet)(AbstractSerialInterface*) const;
     };
     union {
         void* addressSetter;
@@ -126,6 +128,21 @@ const char* Property_TypeToStr(PropertyType_t type);
         static const Property_t prop_ ## _NAME_; \
         ProtocolResult_t get ## _NAME_(const void**, uint16_t *) const; \
         ProtocolResult_t set ## _NAME_(const void*, uint16_t)
+#define DECLARE_PROP_BINARY_SEGMENTED_RW(_NAME_, _PARENT_CLASS_) \
+    ProtocolResult_t get ## _NAME_ (AbstractSerialInterface* serialInterface); \
+    class Set ## _NAME_: public AbstractPacketInterface { \
+    public: \
+        inline Set ## _NAME_(_PARENT_CLASS_* that) : that(that) {} \
+        virtual bool startTransaction(); \
+        virtual bool transmitData(const uint8_t *data, uint16_t length); \
+        virtual bool commitTransaction(); \
+        virtual void cancelTransaction(); \
+        friend class _PARENT_CLASS_; \
+    private: \
+        _PARENT_CLASS_* that; \
+    }; \
+    Set ## _NAME_ set ## _NAME_; \
+    static const Property_t prop_ ## _NAME_;
 
 #define DECLARE_PROP_BOOL_RO(_NAME_) DECLARE_PROP_RO(_NAME_, bool)
 #define DECLARE_PROP_INT32_RO(_NAME_) DECLARE_PROP_RO(_NAME_, int32_t)
@@ -146,6 +163,14 @@ const char* Property_TypeToStr(PropertyType_t type);
 #define MK_PROP_FLOAT32_RW(_CLASS_, _NAME_, _DESC_) MK_PROP_RW(_CLASS_, _NAME_, PropertyType_Float32, _DESC_)
 #define MK_PROP_STRING_RW(_CLASS_, _NAME_, _DESC_)  MK_PROP_RW(_CLASS_, _NAME_, PropertyType_String, _DESC_)
 #define MK_PROP_BINARY_RW(_CLASS_, _NAME_, _DESC_)  MK_PROP_RW(_CLASS_, _NAME_, PropertyType_Binary, _DESC_)
+#define MK_PROP_BINARY_SEG_RW(_CLASS_, _NAME_, _DESC_) \
+        const Property_t _CLASS_::prop_ ## _NAME_ = { \
+            #_NAME_, _DESC_, \
+            PropertyType_BinarySegmented, PropAccessLevel_ReadWrite, \
+            (void*) &_CLASS_::get ## _NAME_, \
+            &((_CLASS_*)NULL)->set ## _NAME_, \
+            ((size_t)(Node*)(_CLASS_*) 1) - 1 \
+        }
 
 #define MK_PROP_BOOL_RO(_CLASS_, _NAME_, _DESC_)    MK_PROP_RO(_CLASS_, _NAME_, PropertyType_Bool, _DESC_)
 #define MK_PROP_INT32_RO(_CLASS_, _NAME_, _DESC_)   MK_PROP_RO(_CLASS_, _NAME_, PropertyType_Int32, _DESC_)
