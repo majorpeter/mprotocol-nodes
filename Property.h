@@ -72,6 +72,11 @@ typedef struct {
 
 const char* Property_TypeToStr(PropertyType_t type);
 
+static inline AbstractPacketInterface* getBinarySegmentedSetter(Node* node, const Property_t* property) {
+    AbstractPacketInterface* packetInterface = (AbstractPacketInterface*) ((uintptr_t) node + (uintptr_t) property->binarySegmentedSet);
+    return packetInterface;
+}
+
 // Property creation macros!
 #define DECLARE_PROP_RO(_NAME_, _CTYPE_) \
     public: \
